@@ -1,7 +1,9 @@
 <template>
     <div class="card">
         <h4>{{ title }}</h4>
-        <a :href="link">{{ link }}</a>
+        <a :href="link"
+        target="_blank"
+        >{{ link }}</a>
         <br>
         <span v-if="title != 'Philosophy'" 
         class="arr"
@@ -15,6 +17,11 @@ export default {
     props: {
         title: String,
         link: String
+    },
+    methods: {
+        slideOut: function() {
+
+        }
     }
 }
 </script>
@@ -35,6 +42,10 @@ div.card {
     animation-name: slidein;
 
     background-color: #FAFAFA;
+}
+
+div.card.slideright {
+    animation-name: slideout;
 }
 
 h4 {
@@ -63,6 +74,16 @@ span.arr {
 
   to {
     margin-left: 0%;
+  }
+}
+
+@keyframes slideout {
+  from {
+    margin-left: 0%;
+  }
+
+  to {
+    margin-left: 130%;
   }
 }
 </style>

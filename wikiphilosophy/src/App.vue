@@ -3,9 +3,13 @@
     <Title></Title>
     <Search
     @start-search="startSearch($event)"
+    ref="searchComponent"
     ></Search>
+    <LoadingIcon v-if="loading"
+    ></LoadingIcon>
     <div class="component" id="cards">
-      <Card v-for="card in data"
+      <Card ref="cardsComponent"
+      v-for="card in data"
       :title="card.title"
       :link="card.link"
       :key="card.key"
@@ -25,6 +29,7 @@ import Title from './components/Title.vue'
 import Search from "./components/Search.vue"
 import Card from "./components/Card.vue"
 import InfoBox from "./components/Info.vue"
+import LoadingIcon from "./components/Loading.vue"
 
 export default {
   name: 'App',
@@ -32,7 +37,8 @@ export default {
     Title,
     Search,
     Card,
-    InfoBox
+    InfoBox,
+    LoadingIcon
   },
   data: function() {
     return {
@@ -92,19 +98,71 @@ export default {
       data: [],
       pageTitle: "",
       animationComplete: false,
+      loading: false,
       styleObj: {
         opacity: 0
       }
     }
   },
   methods: {
-    startSearch: function(title) {
-      this.pageTitle = title;
+    startSearch: async function(title) {
+      this.loading = true;
 
-      //const url = `https://en.wikipedia.org/wiki/${title.replace(" ", "_")}`;
-      // search
+      // Fix common mistakes w/ title
+      this.pageTitle = title.trim();
+      while (this.pageTitle.indexOf(" ") == 0)
+        this.pageTitle = this.pageTitle.slice(1);
 
-      this.moveElements();
+      // const url = `https://en.wikipedia.org/wiki/${this.pageTitle.replace(" ", "_")}`;
+      
+      // const data = { url };
+
+      // const options = {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(data),
+      // };
+
+      // UPDATE LATER ONCE YOU KNOW THE ENDPOINT, RESPONSE FORMAT, ETC.
+      // const response = await fetch("/api/findLink", options);
+      // const json = await response.json();
+      // this.rawdata = json.path;
+
+      this.loading = false;
+      // temporary
+      const err = false;
+      
+      if (err) {
+        this.$refs.searchComponent.showError();
+        return;
+      }
+
+      if (this.data.length >= 1) {
+        setTimeout(this.moveElements, 300 * this.data.length)
+        this.clearElements();
+      } else if (this.rawdata.length >= 1)
+        this.moveElements();
+    },
+    clearElements: function() {
+      this.animationComplete = false;
+      this.styleObj.opacity = 0;
+    
+      const stepper = setInterval(() => {
+        if (this.data.length <= 1) {
+          clearInterval(stepper);
+        }
+
+        this.clearElement();
+      }, 300);
+    },
+    clearElement: function() {
+      const el = this.$refs.cardsComponent[0];
+      el.$el.style.animationDuration = "0.15s";
+      el.$el.className += " slideright";
+
+      setTimeout(() => this.data.pop(), 150);
     },
     moveElements: function() {
       const stepper = setInterval(() => {
@@ -113,8 +171,9 @@ export default {
           this.animationComplete = true;
           this.styleObj.opacity = 1;
         }
+
         this.moveElement();
-      }, 1000);
+      }, 750);
     },
     moveElement: function() {
       const step = this.rawdata.shift();
@@ -125,6 +184,10 @@ export default {
 </script>
 
 <style>
+body {
+  overflow-x: hidden;
+}
+
 div.component {
     display: flex;
     flex-direction: column;
@@ -141,7 +204,7 @@ div#cards {
 
 div#search-data {
   font-size: 1.25rem;
-  font-family: sans-serif;
+  font-family: "Tinos", serif;
   font-weight: normal;
 
   transition: opacity 500ms ease;
