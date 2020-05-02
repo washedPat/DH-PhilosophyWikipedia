@@ -38,7 +38,7 @@ async function validateLinks(url , links, path){
             let regex = /\(([^()]*)\)/g; //Matches for parentheses
             let matches = text.match(regex);
             if(matches){
-                for(j = 0; j < matches.length; j++){
+                for(let j = 0; j < matches.length; j++){
                     if(matches[j].indexOf(title) > -1){
                         linkValid = false;
                     }
