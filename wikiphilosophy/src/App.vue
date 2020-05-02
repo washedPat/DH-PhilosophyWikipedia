@@ -78,30 +78,38 @@ export default {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch("/api/findLink", options);
-      const resObj = await response.json();
+      try {
+        const response = await fetch("/api/findLink", options);
+        const resObj = await response.json();
 
-      this.loading = false;
+        this.loading = false;
 
-      for (let i = 0; i < resObj.path.length; i++) {
-        this.rawdata.push({
-          title: resObj.path[i].slice(30).replace("_", " "),
-          link: resObj.path[i],
-          key: i
-        });
-      }
-      const error = resObj.error;
-      
-      if (error) {
+        for (let i = 0; i < resObj.path.length; i++) {
+          this.rawdata.push({
+            title: resObj.path[i].slice(30).replace("_", " "),
+            link: resObj.path[i],
+            key: i
+          });
+        }
+        const error = resObj.error;
+        
+        if (error) {
+          this.$refs.searchComponent.showError();
+          return;
+        }
+
+        if (this.data.length >= 1) {
+          setTimeout(this.moveElements, 300 * this.data.length)
+          this.clearElements();
+        } else if (this.rawdata.length >= 1)
+          this.moveElements();
+          
+      } catch (e) {
+        console.error(e);
         this.$refs.searchComponent.showError();
+        this.loading = false;
         return;
       }
-
-      if (this.data.length >= 1) {
-        setTimeout(this.moveElements, 300 * this.data.length)
-        this.clearElements();
-      } else if (this.rawdata.length >= 1)
-        this.moveElements();
     },
     clearElements: function() {
       this.animationComplete = false;
