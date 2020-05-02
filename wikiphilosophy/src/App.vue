@@ -54,6 +54,11 @@ export default {
   },
   methods: {
     startSearch: async function(title) {
+      if (this.data.length >= 1) {
+        this.animationComplete = false;
+        this.styleObj.opacity = 0;
+      }
+
       this.loading = true;
 
       // Fix common mistakes w/ title
@@ -63,7 +68,7 @@ export default {
 
       const url = `https://en.wikipedia.org/wiki/${this.pageTitle.replace(" ", "_")}`;
       
-      const data = { url };
+      const data = { link: url };
 
       const options = {
         method: 'POST',

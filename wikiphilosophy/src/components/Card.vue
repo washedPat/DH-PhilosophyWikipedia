@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <h4>{{ title }}</h4>
+        <h4>{{ title.replace("_", " ") }}</h4>
         <a :href="link"
         target="_blank"
         >{{ link }}</a>
