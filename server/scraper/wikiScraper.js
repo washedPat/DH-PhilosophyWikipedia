@@ -9,8 +9,7 @@ async function getAllLinks(url){
         const urlList = $(selector);
         return urlList;
     }catch(err){
-        console.error("ERROR");
-        return; 
+        return null; 
     }
     
 }
@@ -55,7 +54,7 @@ async function validateLinks(url , links, path){
         }
     }
     } catch (error) {
-        console.error("ERROR");   
+        return null;
     }
 }
 
@@ -66,6 +65,15 @@ async function followLink(url, steps, path, successfulCallback, failureCallback)
         let listOfLinks = await getAllLinks(url);
         
         let link = await validateLinks(url,listOfLinks, path);
+
+        if (!link) {
+            let failObj = {
+                path: null, 
+                steps: null, 
+                error: true
+            }
+            failureCallback(failObj);
+        }
         if (steps > maxSteps){
             let failObj = {
                 path: null, 
@@ -88,7 +96,7 @@ async function followLink(url, steps, path, successfulCallback, failureCallback)
         steps++;
         
     }catch (error){
-        console.error("ERROR")
+        return null;
     }
 } 
 

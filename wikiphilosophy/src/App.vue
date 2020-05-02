@@ -80,7 +80,7 @@ export default {
 
       try {
         const response = await fetch("/api/findLink", options);
-        if (response.status == 404) {
+        if (response.status != 200 || !response) {
           this.$refs.searchComponent.showError();
           console.log("test");
           return;
