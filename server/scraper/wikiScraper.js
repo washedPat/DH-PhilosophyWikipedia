@@ -9,14 +9,15 @@ async function getAllLinks(url){
         const urlList = $(selector);
         return urlList;
     }catch(err){
-        console.error(err);
+        console.error("ERROR");
         return; 
     }
     
 }
 
 async function validateLinks(url , links, path){
-    let response = await axios.get(url);
+    try {
+        let response = await axios.get(url);
     const $ = cheerio.load(response.data);
     const html = $('#mw-content-text > div > p')
     const text = html.text();
@@ -53,36 +54,43 @@ async function validateLinks(url , links, path){
             return 'https://en.wikipedia.org' + link;
         }
     }
+    } catch (error) {
+        console.error("ERROR");   
+    }
 }
 
 async function followLink(url, steps, path, successfulCallback, failureCallback){
-    const maxSteps = 100;
-    path.push(url)
-    let listOfLinks = await getAllLinks(url);
-    
-    let link = await validateLinks(url,listOfLinks, path);
-    if (steps > maxSteps){
-        let failObj = {
-            path: null, 
-            steps: null, 
-            error: true
+    try {
+        const maxSteps = 100;
+        path.push(url)
+        let listOfLinks = await getAllLinks(url);
+        
+        let link = await validateLinks(url,listOfLinks, path);
+        if (steps > maxSteps){
+            let failObj = {
+                path: null, 
+                steps: null, 
+                error: true
+            }
+            failureCallback(failObj);
         }
-        failureCallback(failObj);
-    }
-    if(link === 'https://en.wikipedia.org/wiki/Philosophy'){
-        path.push('https://en.wikipedia.org/wiki/Philosophy')
-        let successObj = {
-            path: path,
-            steps: path.length, 
-            error: false
+        if(link === 'https://en.wikipedia.org/wiki/Philosophy'){
+            path.push('https://en.wikipedia.org/wiki/Philosophy')
+            let successObj = {
+                path: path,
+                steps: path.length, 
+                error: false
+            }
+            successfulCallback(successObj);
+        }else{
+            followLink(link, steps++, path, successfulCallback, failureCallback);
         }
-        successfulCallback(successObj);
-    }else{
-        followLink(link, steps++, path, successfulCallback, failureCallback);
+        steps++;
+        
+    }catch (error){
+        console.error("ERROR")
     }
-    steps++;
-    
-}
+} 
 
 async function start(url, steps, path, successfulCallback, failureCallback){
     return await followLink(url, steps, path, successfulCallback, failureCallback)
