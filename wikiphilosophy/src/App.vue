@@ -80,6 +80,12 @@ export default {
 
       try {
         const response = await fetch("/api/findLink", options);
+        if (response.status == 404) {
+          this.$refs.searchComponent.showError();
+          console.log("test");
+          return;
+        }
+
         const resObj = await response.json();
 
         this.loading = false;
@@ -103,7 +109,7 @@ export default {
           this.clearElements();
         } else if (this.rawdata.length >= 1)
           this.moveElements();
-          
+
       } catch (e) {
         console.error(e);
         this.$refs.searchComponent.showError();
