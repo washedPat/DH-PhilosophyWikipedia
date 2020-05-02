@@ -20,7 +20,7 @@ async function validateLinks(url , links, path){
     const $ = cheerio.load(response.data);
     const html = $('#mw-content-text > div > p')
     const text = html.text();
-    for(i = 0; i < links.length; i++){
+    for(let i = 0; i < links.length; i++){
         let link = links[i].attribs.href;
         
         let title = links[i].attribs.title;
@@ -67,7 +67,7 @@ async function followLink(url, steps, path, successfulCallback, failureCallback)
             steps: null, 
             error: true
         }
-        failureCallback();
+        failureCallback(failObj);
     }
     if(link === 'https://en.wikipedia.org/wiki/Philosophy'){
         path.push('https://en.wikipedia.org/wiki/Philosophy')

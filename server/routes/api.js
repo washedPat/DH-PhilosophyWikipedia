@@ -13,10 +13,8 @@ router.post('/findLink', async (req, res) => {
         res.json(obj);
     }
 
-    function failure(){
-        res.json({
-            message: "failure"
-        })
+    function failure(obj){
+        res.json(obj);
     }
 
     start(link, 0, [], success, failure);
