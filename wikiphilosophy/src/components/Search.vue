@@ -5,6 +5,7 @@
             <input type="text" 
             v-model="pageTitle"
             placeholder="Enter the Wiki page title here"
+            @keypress="enter"
             >
             <button
             @click="$emit('start-search', pageTitle)"
@@ -30,6 +31,10 @@ export default {
         }
     },
     methods: {
+        enter: function(e) {
+            if (e.keyCode == 13)
+                this.$emit("start-search", this.pageTitle);
+        },
         showError: function() {
             this.errorStyle.opacity = 0.75;
             this.errorStyle.animationName = "bounce";

@@ -42,59 +42,7 @@ export default {
   },
   data: function() {
     return {
-      // DELETE LATER
-      rawdata: [
-        {
-          title: "Apple",
-          link: "https://en.wikipedia.org/wiki/Apple",
-          key: 0
-        },
-        {
-          title: "Fruit",
-          link: "https://en.wikipedia.org/wiki/Fruit",
-          key: 1
-        },
-        {
-          title: "Botany",
-          link: "https://en.wikipedia.org/wiki/Botany",
-          key: 2
-        },
-        {
-          title: "Science",
-          link: "https://en.wikipedia.org/wiki/Science",
-          key: 3
-        },
-        {
-          title: "Knowledge",
-          link: "https://en.wikipedia.org/wiki/Knowledge",
-          key: 4
-        },
-        {
-          title: "Fact",
-          link: "https://en.wikipedia.org/wiki/Fact",
-          key: 5
-        },
-        {
-          title: "Reality",
-          link: "https://en.wikipedia.org/wiki/Reality",
-          key: 6
-        },
-        {
-          title: "Object of the Mind",
-          link: "https://en.wikipedia.org/wiki/Object_of_the_mind",
-          key: 7
-        },
-        {
-          title: "Object (philosophy)",
-          link: "https://en.wikipedia.org/wiki/Object_(philosophy)",
-          key: 8
-        },
-        {
-          title: "Philosophy",
-          link: "https://en.wikipedia.org/wiki/Philosophy",
-          key: 9
-        },
-      ],
+      rawdata: [],
       data: [],
       pageTitle: "",
       animationComplete: false,
@@ -113,28 +61,27 @@ export default {
       while (this.pageTitle.indexOf(" ") == 0)
         this.pageTitle = this.pageTitle.slice(1);
 
-      // const url = `https://en.wikipedia.org/wiki/${this.pageTitle.replace(" ", "_")}`;
+      const url = `https://en.wikipedia.org/wiki/${this.pageTitle.replace(" ", "_")}`;
       
-      // const data = { url };
+      const data = { url };
 
-      // const options = {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(data),
-      // };
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
 
-      // UPDATE LATER ONCE YOU KNOW THE ENDPOINT, RESPONSE FORMAT, ETC.
-      // const response = await fetch("/api/findLink", options);
-      // const json = await response.json();
-      // this.rawdata = json.path;
+      const response = await fetch("/api/findLink", options);
+      const data = await response.json();
 
       this.loading = false;
-      // temporary
-      const err = false;
+
+      this.rawdata = data.path;
+      const error = data.error;
       
-      if (err) {
+      if (error) {
         this.$refs.searchComponent.showError();
         return;
       }
