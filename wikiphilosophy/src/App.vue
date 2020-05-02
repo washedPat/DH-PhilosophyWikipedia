@@ -74,12 +74,18 @@ export default {
       };
 
       const response = await fetch("/api/findLink", options);
-      const data = await response.json();
+      const resObj = await response.json();
 
       this.loading = false;
 
-      this.rawdata = data.path;
-      const error = data.error;
+      for (let i = 0; i < resObj.path.length; i++) {
+        this.rawdata.push({
+          title: resObj.path[i].slice(30).replace("_", " "),
+          link: resObj.path[i],
+          key: i
+        });
+      }
+      const error = resObj.error;
       
       if (error) {
         this.$refs.searchComponent.showError();
