@@ -16,6 +16,7 @@
         {{ pageTitle }} was {{ data.length - 1 }} steps away from Philosophy!
       </div>
     </div>
+    <InfoBox></InfoBox>
   </div>
 </template>
 
@@ -23,13 +24,15 @@
 import Title from './components/Title.vue'
 import Search from "./components/Search.vue"
 import Card from "./components/Card.vue"
+import InfoBox from "./components/Info.vue"
 
 export default {
   name: 'App',
   components: {
     Title,
     Search,
-    Card
+    Card,
+    InfoBox
   },
   data: function() {
     return {
@@ -105,7 +108,7 @@ export default {
     },
     moveElements: function() {
       const stepper = setInterval(() => {
-        if (this.rawdata.length == 1) { // we end at one because Vue adds weird components to objects that mess up the loop
+        if (this.rawdata.length <= 1) { // we end at one because Vue adds weird components to objects that mess up the loop
           clearInterval(stepper);
           this.animationComplete = true;
           this.styleObj.opacity = 1;
@@ -142,5 +145,22 @@ div#search-data {
   font-weight: normal;
 
   transition: opacity 500ms ease;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFFFFF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #36c;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #35b;
 }
 </style>

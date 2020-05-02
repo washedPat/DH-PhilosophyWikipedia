@@ -31,7 +31,7 @@ div.card {
     text-align: center;
     font-family: sans-serif;
 
-    animation-duration: 0.5s;
+    animation-duration: 0.35s;
     animation-name: slidein;
 
     background-color: #FAFAFA;
@@ -45,6 +45,10 @@ h4 {
 a {
     text-decoration: none;
     color: #36c;
+}
+
+a:hover {
+    color: #35b;
 }
 
 span.arr {

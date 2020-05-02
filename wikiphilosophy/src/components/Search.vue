@@ -44,6 +44,8 @@ input {
     box-sizing: border-box;
     width: 20vw;
     height: 3.5vh;
+
+    outline: none;
 }
 
 button {
@@ -60,6 +62,8 @@ button {
 
     background-color: #36c;
     color: white;
+
+    outline: none;
 }
 
 button:hover {

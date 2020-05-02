@@ -1,11 +1,11 @@
 <template>
   <div id="Title" class="component">
     <h1>Steps to Philosophy</h1>
-    <p><pre>Have you ever wondered how far away a Wikipedia page is from philosophy?
+    <p><pre>Have you ever wondered how far away a Wikipedia page is from Philosophy?
       Of course you have!
 
       Wonder no more: this amazing tool will tell you just how far away any given page is from
-      Wikipedia's philosophy page!</pre>
+      Wikipedia's Philosophy page!</pre>
     </p>
   </div>
 </template>
