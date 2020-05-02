@@ -28,8 +28,10 @@ export default {
 
 <style scoped>
 div.card {
-    width: 40vh;
-    height: 12vh;
+    width: auto;
+    min-width: 30vw;
+    height: auto;
+    min-height: 12vh;
 
     margin: 1vh;
 
